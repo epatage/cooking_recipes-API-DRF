@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 
-import djoser
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
