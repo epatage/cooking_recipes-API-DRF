@@ -30,7 +30,9 @@ router.register('tags/<int: tag_id>', TagViewSet)
 router.register('ingredients', IngredientViewSet)
 router.register('users', UserViewSet)
 router.register('users/me', UserViewSet)
-router.register('users/reset-password-confirm/<str:uid>/<str:token>/', UserViewSet)
+router.register(
+    'users/reset-password-confirm/<str:uid>/<str:token>/', UserViewSet
+)
 router.register(
     r'users/(?P<user_id>\d+)/subscribe',
     SubscribeViewSet,

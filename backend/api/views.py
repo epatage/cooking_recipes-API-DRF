@@ -18,12 +18,13 @@ from .filters import TagFilter
 from .permissions import AuthorOrReadOnly, OwnerOrAdmin, ReadOnly
 from .renderers import TextDataRenderer
 from .serializers import (FavoriteAddSerializer, FavoriteDeleteSerializer,
-                          IngredientSerializer, RecipeGetSerializer, RecipeGetAuthorizedSerializer,
-                          RecipePostSerializer, ShoppingCartAddSerializer,
+                          IngredientSerializer, RecipeGetAuthorizedSerializer,
+                          RecipeGetSerializer, RecipePostSerializer,
+                          ShoppingCartAddSerializer,
                           ShoppingCartDeleteSerializer, ShoppingCartSerializer,
                           SignUpSerializer, SubscribeSerializer,
                           SubscriptionSerializer, TagSerializer,
-                          UserBasicSerializer, UserAuthorizedSerializer)
+                          UserAuthorizedSerializer, UserBasicSerializer)
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
