@@ -140,10 +140,12 @@ REST_FRAMEWORK = {
 DJOSER = {
     'LOGIN_FIELD': 'email',
     'SET_PASSWORD_RETYPE': True,
+    'PASSWORD_RESET_CONFIRM_RETYPE': True,
+    'PASSWORD_RESET_CONFIRM_URL': '#/password-reset/{uid}/{token}',
 
     'SERIALIZERS': {
-        'current_user': 'api.serializers.UserSerializer',
-        'user': 'api.serializers.UserSerializer',
+        'current_user': 'api.serializers.UserAuthorizedSerializer',
+        'user': 'api.serializers.UserBasicSerializer',
         'user_create': 'api.serializers.SignUpSerializer',
     }
 }

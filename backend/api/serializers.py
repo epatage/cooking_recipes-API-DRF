@@ -20,8 +20,22 @@ class Base64ImageField(serializers.ImageField):
         return super().to_internal_value(data)
 
 
-class UserSerializer(serializers.ModelSerializer):
-    """Сериализатор пользователей"""
+class UserBasicSerializer(serializers.ModelSerializer):
+    """Сериализатор всех пользователей."""
+
+    class Meta:
+        model = User
+        fields = (
+            'email',
+            'id',
+            'username',
+            'first_name',
+            'last_name',
+        )
+
+
+class UserAuthorizedSerializer(serializers.ModelSerializer):
+    """Сериализатор авторизированных пользователей."""
     is_subscribed = serializers.SerializerMethodField(
         source='subscription_set'
     )
@@ -181,13 +195,31 @@ class RecipeIngredientPostSerializer(serializers.ModelSerializer):
 
 
 class RecipeGetSerializer(serializers.ModelSerializer):
-    """Для GET запросов рецептов."""
-    author = UserSerializer()
+    """Базовый для GET запросов рецептов."""
+    author = UserBasicSerializer()
     image = Base64ImageField(required=False, allow_null=True)
     tags = RecipeTagSerializer(source='recipetag_set', many=True)
     ingredient = RecipeIngredientsSerializer(
         source='recipeingredient_set', many=True
     )
+
+    class Meta:
+        fields = (
+            'id',
+            'tags',
+            'author',
+            'ingredient',
+            'name',
+            'image',
+            'text',
+            'cooking_time',
+        )
+        model = Recipe
+
+
+class RecipeGetAuthorizedSerializer(RecipeGetSerializer):
+    """Для GET запросов рецептов от авторизированных пользователей."""
+    author = UserAuthorizedSerializer()
     is_favorited = serializers.SerializerMethodField(source='favorite_set')
     is_in_shopping_cart = serializers.SerializerMethodField(
         source='shoppingcart_set'
@@ -285,7 +317,7 @@ class RecipePostSerializer(serializers.ModelSerializer):
 
 class RecipeGetListSerializer(serializers.ModelSerializer):
     """Для GET запросов сериалайзеров Избранного и Списка покупок."""
-    author = UserSerializer()
+    author = UserAuthorizedSerializer()
     image = Base64ImageField(required=False, allow_null=True)
     tags = RecipeTagSerializer(source='recipetag_set', many=True)
     ingredient = RecipeIngredientsSerializer(

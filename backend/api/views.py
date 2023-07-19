@@ -1,4 +1,5 @@
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import AnonymousUser
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, viewsets
@@ -17,12 +18,12 @@ from .filters import TagFilter
 from .permissions import AuthorOrReadOnly, OwnerOrAdmin, ReadOnly
 from .renderers import TextDataRenderer
 from .serializers import (FavoriteAddSerializer, FavoriteDeleteSerializer,
-                          IngredientSerializer, RecipeGetSerializer,
+                          IngredientSerializer, RecipeGetSerializer, RecipeGetAuthorizedSerializer,
                           RecipePostSerializer, ShoppingCartAddSerializer,
                           ShoppingCartDeleteSerializer, ShoppingCartSerializer,
                           SignUpSerializer, SubscribeSerializer,
                           SubscriptionSerializer, TagSerializer,
-                          UserSerializer)
+                          UserBasicSerializer, UserAuthorizedSerializer)
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -32,7 +33,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
     pagination_class = PageNumberPagination
     permission_classes = (AuthorOrReadOnly,)
     filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
-    lookup_field = 'slug'
     search_fields = ('name',)
     filterset_class = TagFilter
     ordering = ('-pub_date',)
@@ -46,7 +46,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action in ('create', 'update', 'partial_update'):
             return RecipePostSerializer
-        return RecipeGetSerializer
+        if self.request.user == AnonymousUser():
+            return RecipeGetSerializer
+        return RecipeGetAuthorizedSerializer
 
     def get_permissions(self):
         if self.action == 'retrieve':
@@ -251,7 +253,7 @@ class ShoppingCartViewSet(viewsets.ModelViewSet):
 class UserViewSet(viewsets.ModelViewSet):
     """Вьюсет пользователей."""
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = UserBasicSerializer
     permission_classes = [AllowAny]
     pagination_class = PageNumberPagination
 
@@ -259,7 +261,8 @@ class UserViewSet(viewsets.ModelViewSet):
         """Меняет сериалайзер при POST для создания пользователя."""
         if self.action == 'create':
             return SignUpSerializer
-        return UserSerializer
+        print('self', self)
+        return UserBasicSerializer
 
     @action(
         methods=['get'],
@@ -281,7 +284,7 @@ class UserViewSet(viewsets.ModelViewSet):
     )
     def me(self, request, *args, **kwargs):
         """Запрос к своей странице пользователя."""
-        serializer = UserSerializer(request.user)
+        serializer = UserAuthorizedSerializer(request.user)
         return Response(
             serializer.data, status=status.HTTP_200_OK
         )
