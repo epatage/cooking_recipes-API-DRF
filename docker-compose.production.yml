@@ -1,0 +1,33 @@
+version: '3.3'
+
+volumes:
+  pg_data_production:
+  static_volume:
+  media_production:
+
+services:
+  db:
+    image: postgres:13
+    env_file: .env
+    volumes:
+      - pg_data_production:/var/lib/postgresql/data
+  backend:
+    image: epatage/foodgram_backend
+    env_file: .env
+    volumes:
+      - static_volume:/backend_static
+      - media_production:/app/media/recipes
+  frontend:
+    image: epatage/foodgram_frontend
+    env_file: .env
+    command: cp -r /app/build/. /frontend_static/
+    volumes:
+      - static_volume:/frontend_static
+  gateway:
+    image: epatage/foodgram_gateway
+    env_file: .env
+    volumes:
+      - static_volume:/static
+      - media_production:/media/recipes/recipes
+    ports:
+      - 8800:80

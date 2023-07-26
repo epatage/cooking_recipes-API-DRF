@@ -132,3 +132,6 @@ dmypy.json
 .idea
 
 tox.ini
+
+# Директория с тестовыми медиа-файлами
+media/recipes/

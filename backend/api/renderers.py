@@ -14,13 +14,13 @@ class TextDataRenderer(renderers.BaseRenderer):
         print(data)
         text_buffer = io.StringIO()
         text_buffer.write(
-            ' '.join(header for header in INGREDIENT_DATA_FILE_HEADERS) + '\n'
+            " ".join(header for header in INGREDIENT_DATA_FILE_HEADERS) + "\n"
         )
 
         for ingredient, value in data.items():
-            print('ID', ingredient, value)
+            print("ID", ingredient, value)
             text_buffer.write(
-                ''.join(str(ingredient) + ' ' + str(value)) + '\n'
+                "".join(str(ingredient) + " " + str(value)) + "\n"
             )
 
         return text_buffer.getvalue()

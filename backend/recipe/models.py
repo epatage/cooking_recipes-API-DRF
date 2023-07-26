@@ -4,39 +4,32 @@ from django.db import models
 
 User = get_user_model()
 
-CHOICES = (
-    ('Gray', 'Серый'),
-    ('Black', 'Чёрный'),
-    ('White', 'Белый'),
-    ('Ginger', 'Рыжий'),
-    ('Mixed', 'Смешанный'),
-)
-
 
 class Tag(models.Model):
     """Теги рецептов."""
+
     name = models.CharField(
         max_length=200,
         unique=True,
-        null=False,
+        null=True,
         blank=False,
     )
     color = models.CharField(
         max_length=7,
-        choices=CHOICES,
         null=True,
-        blank=True,
-        unique=True,
+        blank=False,
     )
     slug = models.SlugField(
         max_length=200,
         unique=True,
         null=True,
         blank=True,
-        validators=[RegexValidator(
-            regex=r'^[-a-zA-Z0-9_]+$',
-            message='Слаг содержит недопустимый символ',
-        )]
+        validators=[
+            RegexValidator(
+                regex=r"^[-a-zA-Z0-9_]+$",
+                message="Слаг содержит недопустимый символ",
+            )
+        ],
     )
 
     def __str__(self):
@@ -45,6 +38,7 @@ class Tag(models.Model):
 
 class Ingredient(models.Model):
     """Ингридиенты рецептов."""
+
     name = models.CharField(
         max_length=200,
         null=False,
@@ -57,16 +51,17 @@ class Ingredient(models.Model):
     )
 
     def __str__(self):
-        return f'{self.name}, {self.measurement_unit}'
+        return f"{self.name}, {self.measurement_unit}"
 
 
 class Recipe(models.Model):
     """Рецепт."""
-    tags = models.ManyToManyField(Tag, through='RecipeTag')
+
+    tags = models.ManyToManyField(Tag, through="RecipeTag")
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='recipes',
+        related_name="recipes",
     )
     name = models.CharField(
         max_length=200,
@@ -74,26 +69,24 @@ class Recipe(models.Model):
         null=False,
     )
     image = models.ImageField(
-        upload_to='recipes/',
+        upload_to="recipes/",
         null=False,
         blank=False,
     )
     text = models.TextField(
-        'Описание',
+        "Описание",
         null=True,
         blank=False,
     )
     ingredients = models.ManyToManyField(
         Ingredient,
-        through='RecipeIngredient',
+        through="RecipeIngredient",
     )
     cooking_time = models.IntegerField(
         blank=False,
         null=False,
     )
-    pub_date = models.DateTimeField(
-        'Дата публикации', auto_now_add=True
-    )
+    pub_date = models.DateTimeField("Дата публикации", auto_now_add=True)
 
     def __str__(self):
         return self.name
@@ -101,54 +94,57 @@ class Recipe(models.Model):
 
 class RecipeTag(models.Model):
     """Связь M2M рецептов и Тэгов."""
+
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.recipe} {self.tag}'
+        return f"{self.recipe} {self.tag}"
 
 
 class RecipeIngredient(models.Model):
     """Связь M2M рецептов и ингредиентов."""
+
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     amount = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
-        return f'{self.recipe} {self.ingredient}'
+        return f"{self.recipe} {self.ingredient}"
 
 
 class Favorite(models.Model):
     """Избранные рецепты."""
+
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
-        related_name='recipes',
+        related_name="recipes",
     )
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='favorites',
+        related_name="favorites",
     )
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=('recipe', 'user'),
-                name='unique_user_recipe_favorite'
+                fields=("recipe", "user"), name="unique_user_recipe_favorite"
             )
         ]
 
 
 class ShoppingCart(models.Model):
     """Список покупок."""
+
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=('recipe', 'user'),
-                name='unique_user_recipe_shopping_card'
+                fields=("recipe", "user"),
+                name="unique_user_recipe_shopping_card",
             )
         ]

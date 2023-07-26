@@ -5,23 +5,26 @@ from django.db import models
 
 class User(AbstractUser):
     """Кастомная модель пользователя."""
+
     email = models.EmailField(
-        'Email адрес',
+        "Email адрес",
         max_length=254,
         unique=True,
         null=True,
         blank=False,
     )
     username = models.CharField(
-        'Username',
+        "Username",
         max_length=150,
         unique=True,
         null=True,
         blank=False,
-        validators=[RegexValidator(
-            regex=r'^[\w.@+-]+\Z',
-            message='Имя пользователя содержит недопустимый символ'
-        )]
+        validators=[
+            RegexValidator(
+                regex=r"^[\w.@+-]+\Z",
+                message="Имя пользователя содержит недопустимый символ",
+            )
+        ],
     )
     first_name = models.CharField(
         max_length=150,
@@ -45,19 +48,20 @@ class User(AbstractUser):
 
 class Subscription(models.Model):
     """Подписки на авторов рецептов."""
+
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='subscriber',
-        verbose_name='Подписчик',
+        related_name="subscriber",
+        verbose_name="Подписчик",
         null=False,
         blank=False,
     )
     subscribing = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='subscribing',
-        verbose_name='Автор рецепта',
+        related_name="subscribing",
+        verbose_name="Автор рецепта",
         null=False,
         blank=False,
     )
@@ -65,7 +69,7 @@ class Subscription(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['user', 'subscribing'],
-                name='unique_follow',
+                fields=["user", "subscribing"],
+                name="unique_follow",
             )
         ]

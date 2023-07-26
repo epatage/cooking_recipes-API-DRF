@@ -1,19 +1,27 @@
 from django.contrib import admin
 from django.db.models import Count
 
-from .models import (Favorite, Ingredient, Recipe, RecipeIngredient, RecipeTag,
-                     ShoppingCart, Tag)
+from .models import (
+    Favorite,
+    Ingredient,
+    Recipe,
+    RecipeIngredient,
+    RecipeTag,
+    ShoppingCart,
+    Tag,
+)
 
 
+@admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
     list_display = (
-        'name',
-        'author',
-        'favorite_added',
+        "name",
+        "author",
+        "favorite_added",
     )
-    search_fields = ('author', 'name', 'tags')
-    list_filter = ('author', 'name', 'tags')
-    empty_value_display = '-пусто-'
+    search_fields = ("author", "name", "tags")
+    list_filter = ("author", "name", "tags")
+    empty_value_display = "-пусто-"
 
     def favorite_added(self, obj):
         return obj.favorite_added
@@ -24,18 +32,15 @@ class RecipeAdmin(admin.ModelAdmin):
         return queryset
 
 
+@admin.register(Ingredient)
 class IngredientAdmin(admin.ModelAdmin):
     list_display = (
-        'name',
-        'measurement_unit',
+        "name",
+        "measurement_unit",
     )
-    list_filter = ('name',)
-    empty_value_display = '-пусто-'
+    list_filter = ("name",)
+    empty_value_display = "-пусто-"
 
-
-admin.site.register(Recipe, RecipeAdmin)
-
-admin.site.register(Ingredient, IngredientAdmin)
 
 admin.site.register(Tag)
 
