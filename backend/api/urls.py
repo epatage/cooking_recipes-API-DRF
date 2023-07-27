@@ -3,15 +3,9 @@ from django.conf.urls.static import static
 from django.urls import include, path
 from rest_framework import routers
 
-from .views import (
-    FavoriteViewSet,
-    IngredientViewSet,
-    RecipeViewSet,
-    ShoppingCartViewSet,
-    SubscribeViewSet,
-    TagViewSet,
-    CustomUserViewSet,
-)
+from .views import (CustomUserViewSet, FavoriteViewSet, IngredientViewSet,
+                    RecipeViewSet, ShoppingCartViewSet, SubscribeViewSet,
+                    TagViewSet)
 
 router = routers.DefaultRouter()
 router.register("recipes", RecipeViewSet)

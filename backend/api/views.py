@@ -2,42 +2,31 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AnonymousUser
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from recipe.models import Favorite, Ingredient, Recipe, ShoppingCart, Tag
+from djoser.views import UserViewSet
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import (
-    AllowAny,
-    IsAuthenticated,
-    IsAuthenticatedOrReadOnly,
-)
-
-from djoser.views import UserViewSet
+from rest_framework.permissions import (AllowAny, IsAuthenticated,
+                                        IsAuthenticatedOrReadOnly)
 from rest_framework.response import Response
+
+from recipe.models import Favorite, Ingredient, Recipe, ShoppingCart, Tag
 from users.models import Subscription, User
 
 #
-from .filters import RecipeFilter, IngredientFilter
+from .filters import IngredientFilter, RecipeFilter
 from .permissions import AuthorOrReadOnly, OwnerOrAdmin, ReadOnly
 from .renderers import TextDataRenderer
-from .serializers import (
-    FavoriteAddSerializer,
-    FavoriteDeleteSerializer,
-    IngredientSerializer,
-    RecipeGetAuthorizedSerializer,
-    RecipeGetSerializer,
-    RecipePostSerializer,
-    ShoppingCartAddSerializer,
-    ShoppingCartDeleteSerializer,
-    SignUpSerializer,
-    SubscribeSerializer,
-    SubscriptionSerializer,
-    TagSerializer,
-    UserAuthorizedSerializer,
-    UserBasicSerializer,
-)
+from .serializers import (FavoriteAddSerializer, FavoriteDeleteSerializer,
+                          IngredientSerializer, RecipeGetAuthorizedSerializer,
+                          RecipeGetSerializer, RecipePostSerializer,
+                          ShoppingCartAddSerializer,
+                          ShoppingCartDeleteSerializer, SignUpSerializer,
+                          SubscribeSerializer, SubscriptionSerializer,
+                          TagSerializer, UserAuthorizedSerializer,
+                          UserBasicSerializer)
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
