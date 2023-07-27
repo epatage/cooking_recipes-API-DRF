@@ -5,6 +5,16 @@ from .models import (Favorite, Ingredient, Recipe, RecipeIngredient, RecipeTag,
                      ShoppingCart, Tag)
 
 
+class RecipeIngredientInline(admin.TabularInline):
+    model = RecipeIngredient
+    extra = 1
+
+
+class RecipeTagInline(admin.TabularInline):
+    model = RecipeTag
+    extra = 1
+
+
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
     list_display = (
@@ -12,6 +22,7 @@ class RecipeAdmin(admin.ModelAdmin):
         "author",
         "favorite_added",
     )
+    inlines = (RecipeIngredientInline, RecipeTagInline)
     search_fields = ("author", "name", "tags")
     list_filter = ("author", "name", "tags")
     empty_value_display = "-пусто-"

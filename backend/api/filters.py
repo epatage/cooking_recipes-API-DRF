@@ -1,11 +1,13 @@
 from django_filters import rest_framework as filters
 from recipe.models import Ingredient, Recipe, Tag
-from django_filters.widgets import CSVWidget
 
 
 class RecipeFilter(filters.FilterSet):
-    tags = filters.RangeFilter(
-        field_name="tags", lookup_expr="slug", method="filter_tags"
+    tags = filters.ModelMultipleChoiceFilter(
+        field_name="tags",
+        lookup_expr="slug",
+        queryset=Tag.objects.all(),
+        to_field_name='slug',
     )
     is_favorited = filters.CharFilter(
         field_name="is_favorited", method="filter_favorited"
