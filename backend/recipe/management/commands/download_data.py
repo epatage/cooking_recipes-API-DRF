@@ -1,7 +1,6 @@
 import csv
 
 from django.core.management.base import BaseCommand
-
 from recipe.models import Ingredient
 
 OBJECTS_LIST = {
