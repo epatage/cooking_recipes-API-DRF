@@ -5,15 +5,17 @@ from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env_path = Path('..') / '.env'
+# env_path = Path('..') / '.env'
+#
+# load_dotenv(dotenv_path=env_path)
 
-load_dotenv(dotenv_path=env_path)
-
-SECRET_KEY = os.getenv('SECRET_KEY')
+# SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = 'django-insecure-w+8&p^a=733ntd#n6r4y)khwf1r81ch&3r^$un^z9)be)1dla)'
 
 DEBUG = True
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split()
+# ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split()
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'foody-moody.hopto.org']
 
 INSTALLED_APPS = [
     "django.contrib.admin",
