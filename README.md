@@ -4,6 +4,10 @@
 
 Яндекс практикум, дипломный проект.
 
+https://foody-moody.hopto.org \
+логин админки: admin \
+пароль: admin
+
 ## Что использовалось
 
 Django, Django REST framework, Postgresql, Docker
@@ -11,48 +15,6 @@ Django, Django REST framework, Postgresql, Docker
 ## Функционал
 
 Пользователи публикуют свои рецепты с указанием состава и количества ингредиентов, времени приготовления, фотографией готового блюда, закрепляют теги по соответствующим темам, благодаря которым другие пользователи будут фильтровать рецепты.
-
-### Примеры запросов
-Регистрация нового пользователя.
-Отправить POST запрос к 'api/users/':
-```
-{
-    "email": "vpupkin@yandex.ru",
-    "username": "vasya.pupkin",
-    "first_name": "Вася",
-    "last_name": "Пупкин",
-    "password": "Qwerty123"
-}
-```
-Авторизация пользователя (по email).
-Отправить POST запрос к 'api/auth/token/login/':
-```
-{
-    "password": "string",
-    "email": "string"
-}
-```
-Создание рецепта.
-Отправить POST запрос к '/api/recipes/' c прикреплением токена:
-```
-{
-  "ingredients": [
-    {
-      "id": 1123,
-      "amount": 10
-    }
-  ],
-  "tags": [
-    1,
-    2
-  ],
-  "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==",
-  "name": "string",
-  "text": "string",
-  "cooking_time": 1
-}
-```
-
 
 ### Как запустить проект:
 
