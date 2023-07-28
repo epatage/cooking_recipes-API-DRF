@@ -267,17 +267,6 @@ class CustomUserViewSet(UserViewSet):
         serializer = SubscriptionSerializer(subscriptions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    # @action(
-    #     methods=["get"],
-    #     detail=False,
-    #     permission_classes=[IsAuthenticated],
-    #     url_path="me",
-    # )
-    # def me(self, request, *args, **kwargs):
-    #     """Запрос к своей странице пользователя."""
-    #     serializer = UserAuthorizedSerializer(request.user)
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
-
     @action(
         methods=["post"],
         detail=False,

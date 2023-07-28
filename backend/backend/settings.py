@@ -1,14 +1,19 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env_path = Path('..')/'.env'
 
-SECRET_KEY = "django-insecure-w+8&p^a=733ntd#n6r4y)khwf1r81ch&3r^$un^z9)be)1dla)"
+load_dotenv(dotenv_path=env_path)
+
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "foody-moody.hopto.org"]
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS')
+
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -61,8 +66,6 @@ WSGI_APPLICATION = "backend.wsgi.application"
 
 DATABASES = {
     "default": {
-        # "ENGINE": "django.db.backends.sqlite3",
-        # "NAME": BASE_DIR / "db.sqlite3",
         "ENGINE": "django.db.backends.postgresql",
         "NAME": os.getenv("POSTGRES_DB", "django"),
         "USER": os.getenv("POSTGRES_USER", "django"),
@@ -128,7 +131,7 @@ DJOSER = {
     "LOGIN_FIELD": "email",
     "HIDE_USERS": False,
     "SERIALIZERS": {
-        # "current_user": "api.serializers.UserAuthorizedSerializer",
+        "current_user": "api.serializers.UserAuthorizedSerializer",
         "user": "api.serializers.UserBasicSerializer",
         "user_create": "api.serializers.SignUpSerializer",
     },
