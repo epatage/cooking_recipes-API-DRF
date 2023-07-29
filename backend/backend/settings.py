@@ -10,12 +10,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # load_dotenv(dotenv_path=env_path)
 
 # SECRET_KEY = os.getenv('SECRET_KEY')
-SECRET_KEY = 'django-insecure-w+8&p^a=733ntd#n6r4y)khwf1r81ch&3r^$un^z9)be)1dla)'
+SECRET_KEY = "django-insecure-w+8&p^a=733ntd#n6r4y)khwf1r81ch&3r^$un^z9)be)1dla)"
 
 DEBUG = True
 
 # ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split()
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'foody-moody.hopto.org']
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "foody-moody.hopto.org"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -74,7 +74,7 @@ DATABASES = {
         "NAME": os.getenv("POSTGRES_DB", "django"),
         "USER": os.getenv("POSTGRES_USER", "django"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD", ""),
-        "HOST": os.getenv("DB_HOST", "db"),
+        "HOST": os.getenv("DB_HOST", ""),
         "PORT": os.getenv("DB_PORT", 5432),
     }
 }
